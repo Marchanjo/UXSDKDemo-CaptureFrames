@@ -2,19 +2,19 @@ package com.dji.uxsdkdemo;
 
 import android.Manifest;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-
-import dji.common.error.DJIError;
-import dji.common.useraccount.UserAccountState;
-import dji.common.util.CommonCallbacks;
-import dji.sdk.useraccount.UserAccountManager;
+import android.view.TextureView;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
+    private CaptureFrame frameAccess;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
-
+        Log.i(TAG, "Classe 01");
+        frameAccess = new CaptureFrame((ImageButton) findViewById(R.id.activity_main_screen_shot), (TextureView) findViewById(R.id.livestream_preview));
+        Log.i(TAG, "Classe 02");
     }
 
+    @Override
+    protected void onPause() {//Marcelo
+        frameAccess.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() { //Marcelo
+        frameAccess.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {//Marcelo
+        super.onResume();
+        frameAccess.onResume();//depois do super.onResume
+    }
 }
 
